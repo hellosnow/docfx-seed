@@ -1,0 +1,293 @@
+﻿{
+  "swagger": "2.0",
+  "info": {
+    "title": "",
+    "version": ""
+  },
+  "schemes": [],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/cp/redeem": {
+      "put": {
+        "tags": [],
+        "operationId": "Temp_RedeemCoupon",
+        "parameters": [
+          {
+            "name": "model",
+            "in": "body",
+            "schema": {
+                  "$ref": "#/definitions/CouponOperationViewModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CouponOperationViewModel"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CouponOperationViewModel": {
+      "type": "object",
+      "x-typeName": "CouponOperationViewModel",
+      "additionalProperties": false,
+      "required": [
+        "CouponingCode",
+        "CouponingReceipt"
+      ],
+      "properties": {
+        "CouponingCode": {
+          "type": "string"
+        },
+        "CouponingReceipt": {
+          "items": [
+            {
+              "$ref": "#/definitions/ShopReceipt"
+            }
+          ]
+        }
+      }
+    },
+    "ShopReceipt": {
+      "type": "object",
+      "x-typeName": "ShopReceipt",
+      "additionalProperties": false,
+      "required": [
+        "IssuerData",
+        "IssueDate",
+        "Products",
+        "Payments",
+        "Total",
+        "SenderData",
+        "UserData"
+      ],
+      "properties": {
+        "IssuerData": {
+          "items": [
+            {
+              "$ref": "#/definitions/Issuer"
+            }
+          ],
+          "title": "IssuerData"
+        },
+        "IssueDate": {
+          "type": "string",
+          "title": "IssueDate",
+          "format": "date-time"
+        },
+        "Products": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "x-typeName": "ReceiptProduct",
+            "$ref": "#/definitions/ReceiptProduct"
+          },
+          "title": "Products"
+        },
+        "Payments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "x-typeName": "Payment",
+            "$ref": "#/definitions/Payment"
+          },
+          "title": "Payments"
+        },
+        "Total": {
+          "type": "number",
+          "title": "Total",
+          "format": "decimal"
+        },
+        "SenderData": {
+          "items": [
+            {
+              "$ref": "#/definitions/Sender"
+            }
+          ],
+          "title": "SenderData"
+        },
+        "UserData": {
+          "type": "string",
+          "title": "UserData"
+        }
+      }
+    },
+    "Issuer": {
+      "type": "object",
+      "x-typeName": "Issuer",
+      "additionalProperties": false,
+      "required": [
+        "Name",
+        "Address",
+        "Telephone",
+        "EMail",
+        "VATNumber"
+      ],
+      "properties": {
+        "Name": {
+          "type": "string",
+          "title": "ReceiptIssuerName"
+        },
+        "Address": {
+          "type": "string",
+          "title": "ReceiptIssuerAddress"
+        },
+        "Telephone": {
+          "type": "string",
+          "title": "ReceiptIssuerTelephone",
+          "pattern": "\\(?([0-9]{7,10})"
+        },
+        "EMail": {
+          "type": "string",
+          "title": "ReceiptIssuerMail"
+        },
+        "VATNumber": {
+          "type": "string",
+          "title": "ReceiptIssuerVatNumber"
+        }
+      }
+    },
+    "ReceiptProduct": {
+      "type": "object",
+      "x-typeName": "ReceiptProduct",
+      "additionalProperties": false,
+      "required": [
+        "Code",
+        "Name",
+        "Price",
+        "Quantity"
+      ],
+      "properties": {
+        "Code": {
+          "type": "string",
+          "title": "ReceiptProductCode"
+        },
+        "Name": {
+          "type": "string",
+          "title": "ReceiptProductName"
+        },
+        "Price": {
+          "type": "number",
+          "title": "ReceiptProductPrice",
+          "format": "decimal"
+        },
+        "Quantity": {
+          "type": "number",
+          "title": "ReceiptProductQuantity",
+          "format": "decimal",
+          "maximum": 1.7976931348623157E+308,
+          "minimum": 0.10000000149011612
+        }
+      }
+    },
+    "Payment": {
+      "type": "object",
+      "x-typeName": "Payment",
+      "additionalProperties": false,
+      "required": [
+        "Method",
+        "CardCode",
+        "Amount"
+      ],
+      "properties": {
+        "Method": {
+          "items": [
+            {
+              "$ref": "#/definitions/PaymentMethod"
+            }
+          ],
+          "title": "Method"
+        },
+        "CardCode": {
+          "type": "string",
+          "title": "CardCode"
+        },
+        "Amount": {
+          "type": "number",
+          "title": "Amount",
+          "format": "decimal"
+        }
+      }
+    },
+    "PaymentMethod": {
+      "type": "integer",
+      "x-typeName": "PaymentMethod",
+      "x-enumNames": [
+        "PrepaidCard",
+        "Visa",
+        "VisaElectron",
+        "Mastercard",
+        "Amex",
+        "Bancomat",
+        "Cheque",
+        "WireTransfer",
+        "Cash",
+        "Points"
+      ],
+      "enum": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "description": ""
+    },
+    "Sender": {
+      "type": "object",
+      "x-typeName": "Sender",
+      "additionalProperties": false,
+      "required": [
+        "Shop",
+        "Terminal",
+        "Type",
+        "Number",
+        "CashDrawer",
+        "Operator"
+      ],
+      "properties": {
+        "Shop": {
+          "type": "string",
+          "title": "Shop"
+        },
+        "Terminal": {
+          "type": "string",
+          "title": "Terminal"
+        },
+        "Type": {
+          "type": "integer",
+          "title": "Type"
+        },
+        "Number": {
+          "type": "integer",
+          "title": "Number"
+        },
+        "CashDrawer": {
+          "type": "integer",
+          "title": "CashDrawer"
+        },
+        "Operator": {
+          "type": "string",
+          "title": "Operator"
+        }
+      }
+    }
+  },
+  "responses": {},
+  "securityDefinitions": {}
+}
